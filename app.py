@@ -8,25 +8,19 @@ from flask import request
 from datetime import datetime
 from flask_cors import CORS, cross_origin
 import uuid
-from dotenv import load_dotenv
 
 app = Flask(__name__)
 
 # CORS
 CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['CORS_HEADERS'] = 'Content-Type'
-project_folder = os.path.expanduser('~/win-codenames-backend')
-print("PROJECT FOLDER")
-print(project_folder)
-env_path = os.path.join(project_folder, '.env')
-print("ENV PATH")
-print(env_path)
-load_dotenv(env_path)
 
 # DB connection
 username = os.getenv("MONGO_USERNAME")
+username2 = os.environ['MONGO_USERNAME']
 print("HERE IS USERNAME")
 print(username)
+print(username2)
 password = os.getenv("MONGO_PASSWORD")
 MONGO_URI = f'mongodb://{username}:{password}@ds137267.mlab.com:37267/win_codenames?retryWrites=false'
 app.config["MONGO_URI"] = MONGO_URI
