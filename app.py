@@ -24,7 +24,12 @@ username = os.getenv("MONGO_USERNAME")
 password = os.getenv("MONGO_PASSWORD")
 MONGO_URI = f'mongodb://{username}:{password}@ds137267.mlab.com:37267/win_codenames?retryWrites=false'
 app.config["MONGO_URI"] = MONGO_URI
-mongo = PyMongo(app, connectTimeoutMS=30000, socketTimeoutMS=None, socketKeepAlive=True, connect=False, maxPoolsize=1)
+app.config["connectTimeoutMS"] = 30000
+app.config['socketTimeoutMS'] = None
+app.config['socketKeepAlive'] = True
+app.config['connect'] = False
+app.config['maxPoolSize'] = 1
+mongo = PyMongo(app)
 
 PREFIX = "/api"
 
