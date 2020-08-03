@@ -15,12 +15,12 @@ app = Flask(__name__)
 # CORS
 CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['CORS_HEADERS'] = 'Content-Type'
-
-project_folder = os.path.expanduser('~/win-codenames-backend/')  # adjust as appropriate
-load_dotenv(os.path.join(project_folder, '.env'))
+load_dotenv()
 
 # DB connection
 username = os.getenv("MONGO_USERNAME")
+print("HERE IS USERNAME")
+print(username)
 password = os.getenv("MONGO_PASSWORD")
 MONGO_URI = f'mongodb://{username}:{password}@ds137267.mlab.com:37267/win_codenames?retryWrites=false'
 app.config["MONGO_URI"] = MONGO_URI
