@@ -8,6 +8,7 @@ from flask import request
 from datetime import datetime
 from flask_cors import CORS, cross_origin
 import uuid
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 
@@ -15,7 +16,8 @@ app = Flask(__name__)
 CORS(app, resources={r"/*": {"origins": "*"}})
 app.config['CORS_HEADERS'] = 'Content-Type'
 
-
+project_folder = os.path.expanduser('~/win-codenames-backend/')  # adjust as appropriate
+load_dotenv(os.path.join(project_folder, '.env'))
 
 # DB connection
 username = os.getenv("MONGO_USERNAME")
