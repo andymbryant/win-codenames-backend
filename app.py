@@ -17,10 +17,6 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 
 # DB connection
 username = os.getenv("MONGO_USERNAME")
-username2 = os.environ['MONGO_USERNAME']
-print("HERE IS USERNAME")
-print(username)
-print(username2)
 password = os.getenv("MONGO_PASSWORD")
 MONGO_URI = f'mongodb://{username}:{password}@ds137267.mlab.com:37267/win_codenames?retryWrites=false'
 app.config["MONGO_URI"] = MONGO_URI
