@@ -1,13 +1,24 @@
 from flask import Flask
 from flask_pymongo import PyMongo
 import json
+import os
 from bson.json_util import dumps
+from flask_cors import CORS, cross_origin
+
 app = Flask(__name__)
 
-user = 'admin'
-password = 'bryanta1'
-app.config["MONGO_URI"] = f'mongodb://{user}:{password}@ds137267.mlab.com:37267/win_codenames'
+
+# CORS
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
+
+# DB connection
+username = os.getenv("MONGO_USERNAME")
+password = os.getenv("MONGO_PASSWORD")
+app.config["MONGO_URI"] = f'mongodb://{username}:{password}@ds137267.mlab.com:37267/win_codenames'
 mongo = PyMongo(app)
+
+PREFIX = "/api"
 
 def get_games(game_id):
     if game_id:
@@ -18,32 +29,28 @@ def get_games(game_id):
 
 def get_clues(clue_id):
     if clue_id:
-        clue = mongo.db.games.find({"id": clue_id})
+        clue = mongo.db.clues.find({"id": clue_id})
         return clue
-    random_clue = mongo.db.games.aggregate([{ "$sample": { "size": 1 } }])
+    random_clue = mongo.db.clues.aggregate([{ "$sample": { "size": 1 } }])
     return random_clue
 
-@app.route('/')
-def hello_world():
-    return 'Hello, World!'
-
-@app.route('/games/', defaults={'game_id': None})
-@app.route('/games/<game_id>/')
+@app.route(PREFIX + '/games/', defaults={'game_id': None})
+@app.route(PREFIX + '/games/<game_id>/')
 def games(game_id):
     game = get_games(game_id)
     return dumps(game)
 
-@app.route('/clues/', defaults={'clue_id': None})
-@app.route('/clues/<clue_id>/')
-def games(clue_id):
+@app.route(PREFIX + '/clues/', defaults={'clue_id': None})
+@app.route(PREFIX + '/clues/<clue_id>/')
+def clues(clue_id):
     clue = get_clues(clue_id)
     return dumps(clue)
 
-@app.route('/reviews/')
+@app.route(PREFIX + '/reviews/')
 def reviews():
     return 'reviews'
 
-@app.route('/create-review/', methods=['POST'])
+@app.route(PREFIX + '/create-review/', methods=['POST'])
 def create_review():
     print(request)
     return 'nice'
